@@ -2056,6 +2056,9 @@ bool D3D12CommandProcessor::IssueDraw(xenos::PrimitiveType primitive_type,
     switch (vfetch_constant.type) {
       case xenos::FetchConstantType::kVertex:
         break;
+      case xenos::FetchConstantType::kTexture:
+        goto drawProcedure;
+        continue;
       case xenos::FetchConstantType::kInvalidVertex:
         if (cvars::gpu_allow_invalid_fetch_constants) {
           break;
@@ -2186,6 +2189,7 @@ bool D3D12CommandProcessor::IssueDraw(xenos::PrimitiveType primitive_type,
     }
   }
 
+  drawProcedure:
   // Actually draw.
   if (indexed) {
     uint32_t index_size =
