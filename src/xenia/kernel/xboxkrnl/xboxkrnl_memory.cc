@@ -386,8 +386,12 @@ dword_result_t MmAllocatePhysicalMemoryEx(dword_t flags, dword_t region_size,
     // Failed - assume no memory available.
     return 0;
   }
-  XELOGD("MmAllocatePhysicalMemoryEx = {:08X}", base_address);
 
+  if (min_addr_range.value() - 0x1000 == (base_address & 0x1FFFFFFF)) {
+    base_address += 0x1000;
+  }
+
+  XELOGD("MmAllocatePhysicalMemoryEx = {:08X}", base_address);
   return base_address;
 }
 DECLARE_XBOXKRNL_EXPORT1(MmAllocatePhysicalMemoryEx, kMemory, kImplemented);
