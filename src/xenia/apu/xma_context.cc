@@ -65,13 +65,13 @@ int XmaContext::Setup(uint32_t id, Memory* memory, uint32_t guest_ptr) {
   // find the XMA2 audio decoder
   av_codec_ = avcodec_find_decoder(AV_CODEC_ID_XMAFRAMES);
   if (!av_codec_) {
-    XELOGE("XmaContext {}: Codec not found", id);
+    XELOGW("XmaContext {}: Codec not found", id);
     return 1;
   }
 
   av_context_ = avcodec_alloc_context3(av_codec_);
   if (!av_context_) {
-    XELOGE("XmaContext {}: Couldn't allocate context", id);
+    XELOGW("XmaContext {}: Couldn't allocate context", id);
     return 1;
   }
 
@@ -81,7 +81,7 @@ int XmaContext::Setup(uint32_t id, Memory* memory, uint32_t guest_ptr) {
 
   av_frame_ = av_frame_alloc();
   if (!av_frame_) {
-    XELOGE("XmaContext {}: Couldn't allocate frame", id);
+    XELOGW("XmaContext {}: Couldn't allocate frame", id);
     return 1;
   }
 
@@ -458,7 +458,7 @@ void XmaContext::Decode(XMA_CONTEXT_DATA* data) {
           // No more frames.
           SwapInputBuffer(data);
           // TODO partial frames? end?
-          XELOGE("XmaContext {}: TODO partial frames? end?", id());
+          XELOGW("XmaContext {}: TODO partial frames? end?", id());
           assert_always("TODO");
           return;
         } else {
@@ -556,7 +556,7 @@ void XmaContext::Decode(XMA_CONTEXT_DATA* data) {
 
     auto ret = avcodec_send_packet(av_context_, av_packet_);
     if (ret < 0) {
-      XELOGE("XmaContext {}: Error sending packet for decoding", id());
+      XELOGW("XmaContext {}: Error sending packet for decoding", id());
       // TODO bail out
       assert_always();
     }
@@ -568,7 +568,7 @@ void XmaContext::Decode(XMA_CONTEXT_DATA* data) {
     else
     */
     if (ret < 0) {
-      XELOGE("XmaContext {}: Error during decoding", id());
+      XELOGW("XmaContext {}: Error during decoding", id());
       assert_always();
       return;  // TODO bail out
     }
@@ -801,7 +801,7 @@ int XmaContext::PrepareDecoder(uint8_t* packet, int sample_rate, int channels) {
     av_context_->channels = channels;
 
     if (avcodec_open2(av_context_, av_codec_, NULL) < 0) {
-      XELOGE("XmaContext: Failed to reopen FFmpeg context");
+      XELOGW("XmaContext: Failed to reopen FFmpeg context");
       return -1;
     }
     return 1;
