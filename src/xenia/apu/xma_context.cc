@@ -478,6 +478,10 @@ void XmaContext::Decode(XMA_CONTEXT_DATA* data) {
       std::tie(packet_idx, frame_idx) =
           GetFrameNumber(current_input_buffer, current_input_size,
                          data->input_buffer_read_offset);
+
+      if (frame_idx < 0) {
+        return;
+      }
       // TODO handle
       assert_true(packet_idx >= 0);
       assert_true(frame_idx >= 0);
@@ -720,7 +724,7 @@ std::tuple<int, int> XmaContext::GetFrameNumber(uint8_t* block, size_t size,
   int frame_idx = 0;
   while (true) {
     if (stream.BitsRemaining() < 15) {
-      return {packet_idx, -1};
+      return {packet_idx, frame_idx};
     }
 
     if (stream.offset_bits() == bit_offset) {
@@ -817,6 +821,9 @@ bool XmaContext::ConvertFrame(const uint8_t** samples, int num_channels,
       // Select the appropriate array based on the current channel.
       auto sample_array = reinterpret_cast<const float*>(samples[j]);
 
+      if (!sample_array) {
+        return false;
+      }
       // Raw sample should be within [-1, 1].
       // Clamp it, just in case.
       float raw_sample = xe::saturate(sample_array[i]);
