@@ -115,7 +115,7 @@ X_STATUS UserModule::LoadFromFile(const std::string_view path) {
     return result;
   }
 
-  XELOGI("Module hash: {:08X} for {}", hash_, name_);
+  XELOGE("Module hash: {:08X} for {}", hash_, name_);
 
   if (cvars::xex_apply_patches) {
     // Search for xexp patch file

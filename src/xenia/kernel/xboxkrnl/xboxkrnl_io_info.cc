@@ -93,13 +93,13 @@ dword_result_t NtQueryInformationFile(
     }
     case XFileSectorInformation: {
       // TODO(benvanik): return sector this file's on.
-      XELOGE("NtQueryInformationFile(XFileSectorInformation) unimplemented");
+      XELOGW("NtQueryInformationFile(XFileSectorInformation) unimplemented");
       status = X_STATUS_INVALID_PARAMETER;
       out_length = 0;
       break;
     }
     case XFileXctdCompressionInformation: {
-      XELOGE(
+      XELOGW(
           "NtQueryInformationFile(XFileXctdCompressionInformation) "
           "unimplemented");
       // Files that are XCTD compressed begin with the magic 0x0FF512ED but we
