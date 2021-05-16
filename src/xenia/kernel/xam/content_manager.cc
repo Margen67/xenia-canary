@@ -359,7 +359,6 @@ bool ContentManager::IsContentOpen(const ContentData& data) const {
                      [data](std::pair<string_key, ContentPackage*> content) {
                        return data == content.second->GetPackageContentData();
                      });
-
 }
 
 }  // namespace xam

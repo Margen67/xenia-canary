@@ -696,6 +696,7 @@ dword_result_t XamUserCreateAchievementEnumerator(dword_t title_id,
 
   auto e = object_ref<XStaticAchievementEnumerator>(
       new XStaticAchievementEnumerator(kernel_state(), count, flags));
+
   auto result = e->Initialize(user_index, 0xFB, 0xB000A, 0xB000B, 0);
   if (XFAILED(result)) {
     return result;

@@ -470,10 +470,8 @@ void EmulatorWindow::UpdateTitle() {
   }
 
   patcher::PatchingSystem* patching_system = emulator()->patching_system();
-  if (patching_system) {
-    if (patching_system->IsAnyPatchApplied()) {
-      sb.Append(u8" [Patches Applied]");
-    }
+  if (patching_system && patching_system->IsAnyPatchApplied()) {
+    sb.Append(u8" [Patches Applied]");
   }
   window_->set_title(sb.to_string_view());
 }

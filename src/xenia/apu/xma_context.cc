@@ -179,7 +179,7 @@ void XmaContext::SwapInputBuffer(XMA_CONTEXT_DATA* data) {
 bool XmaContext::TrySetupNextLoop(XMA_CONTEXT_DATA* data,
                                   bool ignore_input_buffer_offset) {
   // Setup the input buffer offset if next loop exists.
-  if (data->loop_count > 0 &&
+  if (data->loop_count > 0 && data->loop_start < data->loop_end &&
       (ignore_input_buffer_offset ||
        data->input_buffer_read_offset >= data->loop_end)) {
     // Loop back to the beginning.
