@@ -334,8 +334,17 @@ std::filesystem::path ContentManager::ResolveGameUserContentPath() {
   return root_path_ / title_id / kGameUserContentDirName / user_name;
 }
 
+bool ContentManager::IsContentOpen(const ContentData& data) const {
+  return std::any_of(open_packages_.cbegin(), open_packages_.cend(),
+                     [data](std::pair<string_key, ContentPackage*> content) {
+                       return data == content.second->GetPackageContentData();
+                     });
+}
+
 void ContentManager::CloseOpenedFilesFromContent(
     const std::string_view root_name) {
+  // TODO(Gliniak): Cleanup this code to care only about handles
+  // related to provided content
   const std::vector<object_ref<XFile>> all_files_handles =
       kernel_state_->object_table()->GetObjectsByType<XFile>(
           XObject::Type::File);
@@ -346,19 +355,12 @@ void ContentManager::CloseOpenedFilesFromContent(
 
   for (const object_ref<XFile>& file : all_files_handles) {
     std::string file_path = file->entry()->absolute_path();
-    file_path = file_path.substr(0, file_path.find_last_of('\\') + 1);
+    bool is_file_inside_content = utf8::starts_with(file_path, resolved_path);
 
-    if (file_path == resolved_path) {
+    if (is_file_inside_content) {
       file->ReleaseHandle();
     }
   }
-}
-
-bool ContentManager::IsContentOpen(const ContentData& data) const {
-  return std::any_of(open_packages_.cbegin(), open_packages_.cend(),
-                     [data](std::pair<string_key, ContentPackage*> content) {
-                       return data == content.second->GetPackageContentData();
-                     });
 }
 
 }  // namespace xam
