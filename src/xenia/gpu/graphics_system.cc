@@ -8,6 +8,7 @@
  */
 
 #include <algorithm>
+
 #include "xenia/gpu/graphics_system.h"
 
 #include "xenia/base/byte_stream.h"
