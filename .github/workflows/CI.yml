@@ -68,5 +68,5 @@ jobs:
           Throw "Error: Archive $asset too small!"
         }
         $tag=$env:GITHUB_SHA.SubString(0,7)
-        $title=${tag}_$($env:GITHUB_REF -replace 'refs/heads/', '')
+        $title="${tag}_$($env:GITHUB_REF -replace 'refs/heads/', '')"
         gh release create $tag $asset --target $env:GITHUB_SHA -t $title
