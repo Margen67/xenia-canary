@@ -55,10 +55,10 @@ jobs:
         path: artifacts\xenia_canary
         if-no-files-found: error
     - name: Create release
-      if: |
-        github.repository == 'xenia-canary/xenia-canary' &&
-        github.event.action != 'pull_request' &&
-        contains(github.ref, 'refs/heads/canary')
+      #if: |
+      #  github.repository == 'xenia-canary/xenia-canary' &&
+      #  github.event.action != 'pull_request' &&
+      #  contains(github.ref, 'refs/heads/canary')
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       run: |
